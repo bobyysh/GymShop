@@ -2,83 +2,150 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>GymShop - Sklep Sportowy</title>
+    <title>GymShop - Sprzęt Premium</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        /* Stylizacja nawigacji */
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            color: #555 !important;
+            margin: 0 10px;
+            transition: color 0.2s;
+        }
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+            color: #000 !important;
+        }
+
+        /* Stylizacja kart produktów */
+        .product-card {
+            transition: all 0.3s ease;
+            background: #ffffff;
+            border: 1px solid #eee !important;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+            border-color: #ddd !important;
+        }
+
+        /* Obszar zdjęcia */
+        .card-img-wrapper {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: calc(0.375rem - 1px) calc(0.375rem - 1px) 0 0;
+        }
+
+        .card-img-top {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.05));
+        }
+
+        .category-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+        }
+    </style>
 </head>
-<body class="bg-light"> <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-3">
     <div class="container">
-        <a class="navbar-brand" href="#">
-            <i class="bi bi-activity"></i> GymShop
-        </a>
+        <a class="navbar-brand fw-bold fs-4" href="/products">GYMSHOP</a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="/products">Produkty</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Koszyk (0)</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Zaloguj</a>
-                </li>
+
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" href="#">Wszystkie produkty</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Hantle</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Maszyny</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Cardio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Akcesoria</a></li>
             </ul>
+        </div>
+
+        <div class="d-flex align-items-center gap-3 d-none d-lg-flex">
+            <a href="#" class="text-dark position-relative text-decoration-none">
+                <i class="bi bi-bag fs-5"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+            </a>
+            <a href="#" class="text-dark"><i class="bi bi-person fs-5"></i></a>
         </div>
     </div>
 </nav>
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
 
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <h2>Oferta sprzętu</h2>
-            <p class="text-muted">Znajdź najlepszy sprzęt na swoją siłownię</p>
-        </div>
-        <div class="col-md-6 text-end">
-            <a href="/products/add" class="btn btn-success">
-                <i class="bi bi-plus-circle"></i> Dodaj nowy produkt
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-5">Sprzęt Fitness Premium</h1>
+        <p class="text-muted lead">Zmień swój trening dzięki profesjonalnemu wyposażeniu</p>
+    </div>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-3 mb-md-0">Nasza Oferta</h3>
+
+        <div class="d-flex gap-3">
+            <select class="form-select w-auto" aria-label="Sortowanie">
+                <option selected>Sortuj według: Polecane</option>
+                <option value="1">Cena: od najniższej</option>
+                <option value="2">Cena: od najwyższej</option>
+            </select>
+
+            <a href="/products/add" class="btn btn-dark text-nowrap px-4">
+                <i class="bi bi-plus-lg"></i> Dodaj produkt
             </a>
         </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+        <div class="col" th:each="product : ${products}">
+            <div class="card h-100 border-0 shadow-sm product-card">
 
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                <tr>
-                    <th>Nazwa</th>
-                    <th>Kategoria</th>
-                    <th>Cena</th>
-                    <th>Opis</th>
-                    <th>Akcje</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="product : ${products}">
-                    <td class="fw-bold" th:text="${product.name}">Hantle</td>
-                    <td>
-                        <span class="badge bg-secondary" th:text="${product.category}">Siła</span>
-                    </td>
-                    <td class="text-success fw-bold" th:text="${product.price} + ' zł'">100 zł</td>
-                    <td class="text-muted small" th:text="${product.description}">Opis...</td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-outline-primary">Edytuj</a>
-                        <a href="#" class="btn btn-sm btn-outline-danger">Usuń</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                <div class="card-img-wrapper">
+                    <img th:src="${product.imageUrl != null && !product.imageUrl.isEmpty() ? product.imageUrl : 'https://dummyimage.com/400x400/f8f9fa/adb5bd.jpg&text=Brak+zdjęcia'}"
+                         class="card-img-top"
+                         alt="Zdjęcie produktu">
+                </div>
 
-            <div th:if="${products.isEmpty()}" class="alert alert-info text-center mt-3">
-                <i class="bi bi-info-circle"></i> Magazyn jest pusty. Dodaj pierwszy produkt!
+                <div class="card-body d-flex flex-column text-start">
+                    <span class="category-badge mb-1" th:text="${product.category}">Kategoria</span>
+                    <h5 class="card-title fw-bold mb-2" th:text="${product.name}">Nazwa produktu</h5>
+
+                    <p class="card-text text-muted small mb-3" th:text="${#strings.abbreviate(product.description, 60)}">
+                        Krótki opis produktu...
+                    </p>
+
+                    <div class="mt-auto">
+                        <h4 class="fw-bold mb-3" th:text="${#numbers.formatDecimal(product.price, 1, 2, 'COMMA')} + ' zł'">0,00 zł</h4>
+
+                        <div class="d-flex gap-2 pt-3 border-top">
+                            <a href="#" class="btn btn-outline-dark btn-sm flex-fill">Edytuj</a>
+                            <a href="#" class="btn btn-outline-danger btn-sm flex-fill">Usuń</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
+
+    <div th:if="${products.isEmpty()}" class="text-center mt-5 py-5 text-muted">
+        <i class="bi bi-box-seam display-1"></i>
+        <p class="mt-3 fs-5">Obecnie brak produktów w magazynie.</p>
+        <a href="/products/add" class="btn btn-primary mt-2">Dodaj pierwszy produkt</a>
+    </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

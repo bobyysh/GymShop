@@ -5,6 +5,8 @@ import org.example.gymshop.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 import java.util.ArrayList;
@@ -23,5 +25,17 @@ public class ProductController {
         List<Product> products = productService.findAllProducts();
         model.addAttribute("products", products);
         return "products";
+    }
+
+    @GetMapping("/products/add")
+    public String showAddProductForm(Model model) {
+        model.addAttribute("product", new Product());
+        return "add-product";
+    }
+
+    @PostMapping("/products/add")
+    public String addProduct(@ModelAttribute("product") Product product) {
+        productService.saveProduct(product);
+        return "redirect:/products";
     }
 }
