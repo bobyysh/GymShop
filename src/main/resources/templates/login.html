@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Logowanie - GymShop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        /* Stylizacja formularza - identyczna jak w reszcie aplikacji */
+        .form-control:focus {
+            border-color: #000;
+            box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group-text {
+            border-right: 0;
+            background-color: #fff;
+        }
+
+        /* Usuwamy lewą ramkę inputa, żeby ładnie się łączył z ikonką */
+        .input-group .form-control {
+            border-left: 0;
+        }
+
+        /* Fix: Po kliknięciu w input, żeby nie było widać łączenia z ikoną */
+        .input-group .form-control:focus {
+            z-index: 3;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #333;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <div class="mb-4 text-center">
+                <a href="/products" class="text-decoration-none text-muted small">
+                    <i class="bi bi-arrow-left"></i> Wróć do sklepu
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold">Witaj ponownie</h3>
+                        <p class="text-muted">Zaloguj się, aby zarządzać sklepem</p>
+                    </div>
+
+                    <div th:if="${param.error}" class="alert alert-danger text-center small py-2 mb-3">
+                        <i class="bi bi-exclamation-circle me-2"></i>Błędny login lub hasło!
+                    </div>
+
+                    <div th:if="${param.logout}" class="alert alert-success text-center small py-2 mb-3">
+                        <i class="bi bi-check-circle me-2"></i>Wylogowano pomyślnie.
+                    </div>
+
+                    <form th:action="@{/login}" method="post" autocomplete="off">
+
+                        <div class="mb-3">
+                            <label class="form-label">Nazwa użytkownika</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" name="username" class="form-control form-control-lg" placeholder="Twoja nazwa użytkownika " required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Hasło</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" name="password" class="form-control form-control-lg" placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 pt-2">
+                            <button type="submit" class="btn btn-dark btn-lg">Zaloguj się</button>
+                        </div>
+
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted small mb-0">Nie masz jeszcze konta?</p>
+                        <a href="/register" class="text-dark fw-bold text-decoration-none">Zarejestruj się tutaj</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
