@@ -59,7 +59,14 @@
                             <label class="form-label">Nazwa użytkownika</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input type="text" th:field="*{username}" class="form-control form-control-lg" placeholder="Twoja nazwa użytkownika" required>
+
+                                <input type="text" th:field="*{username}"
+                                       class="form-control form-control-lg"
+                                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
+                                       placeholder="Twoja nazwa użytkownika" required>
+                            </div>
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                                Błąd nazwy użytkownika
                             </div>
                         </div>
 
@@ -67,7 +74,13 @@
                             <label class="form-label">Hasło</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="password" th:field="*{password}" class="form-control form-control-lg" placeholder="••••••••" required>
+                                <input type="password" th:field="*{password}"
+                                       class="form-control form-control-lg"
+                                       th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+                                       placeholder="••••••••">
+                            </div>
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                                Błąd hasła
                             </div>
                         </div>
 
