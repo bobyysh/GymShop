@@ -15,10 +15,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrd->csrd.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Ścieżki dostępne dla każdego (Rejestracja, logowanie, style, podgląd sklepu)
                         .requestMatchers("/register", "/login", "/css/**", "/images/**", "/error").permitAll()
-                        .requestMatchers("/", "/products").permitAll()
+                        .requestMatchers("/", "/products", "/products/category/*").permitAll()
                         // Reszta wymaga logowania
                         .anyRequest().authenticated()
                 )

@@ -4,10 +4,7 @@ import org.example.gymshop.model.Product;
 import org.example.gymshop.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.ArrayList;
@@ -22,9 +19,23 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public String products(Model model) {
-        List<Product> products = productService.findAllProducts();
+    public String products(@RequestParam(required = false) String sort,  Model model) {
+
+        String sortType = (sort != null) ? sort : "asc";
+
+        List<Product> products = productService.findAllProducts(sortType);
         model.addAttribute("products", products);
+        model.addAttribute("sort", sortType);
+        return "products";
+    }
+
+    @GetMapping("/products/category/{categoryName}")
+    public String productsCategory(@PathVariable String categoryName, @RequestParam(required = false) String sort ,Model model) {
+        String sortType = (sort != null) ? sort : "asc";
+
+        List<Product> products = productService.findByCategory(categoryName, sortType);
+        model.addAttribute("products", products);
+        model.addAttribute("sort", sortType);
         return "products";
     }
 
