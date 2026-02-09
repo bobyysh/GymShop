@@ -29,9 +29,12 @@ public class CartController {
 
         List<CartItem> cartItems = cartService.getCartItems(userDetails.getUsername());
 
-        double totalPrice = cartItems.stream()
-                .mapToDouble(item -> item.getProduct().getPrice()* item.getQuantity())
-                .sum();
+        double totalPrice = 0;
+        for (CartItem item : cartItems) {
+            double price = item.getProduct().getPrice();
+            int quantity = item.getQuantity();
+            totalPrice = totalPrice + (price * quantity);
+        }
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalPrice", totalPrice);
         return "cart";
