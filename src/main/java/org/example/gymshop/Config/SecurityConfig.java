@@ -15,9 +15,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrd->csrd.disable())
+                //.csrf(csrd->csrd.disable()) wyłączenie ochrony csrf pod testy w postmanie
                 .authorizeHttpRequests(auth -> auth
-                        // Ścieżki dostępne dla każdego (Rejestracja, logowanie, style, podgląd sklepu)
+                        // Ścieżki dostępne dla każdego
                         .requestMatchers("/register", "/login", "/css/**", "/images/**", "/error").permitAll()
                         .requestMatchers("/", "/products", "/products/category/*").permitAll()
                         // Reszta wymaga logowania
